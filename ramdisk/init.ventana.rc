@@ -34,6 +34,8 @@ on init
     symlink /storage/sdcard1 /extSdCard
     symlink /storage/sdcard1 /mnt/extSdCard
 
+    symlink /dev/asusec /dev/asusdec
+
 on fs
     mount_all /fstab.ventana
     swapon_all /fstab.ventana

@@ -61,7 +61,8 @@ TARGET_CPU_SMP := true
 TARGET_ARCH := arm
 TARGET_ARCH_VARIANT_FPU := vfpv3-d16
 ARCH_ARM_HAVE_TLS_REGISTER := true
-ARCH_ARM_HIGH_OPTIMIZATION := true
+
+DEBUG_NO_STDCXX11 := yes
 
 BOARD_KERNEL_CMDLINE :=
 BOARD_KERNEL_BASE := 0x10000000
@@ -90,15 +91,14 @@ BOARD_USES_PROPRIETARY_OMX := TF101
 BOARD_USE_SKIA_LCDTEXT := true
 BOARD_NO_ALLOW_DEQUEUE_CURRENT_BUFFER := true
 
+MALLOC_IMPL := dlmalloc
+
 # Recovery and boot.img settings
 BOARD_CUSTOM_BOOTIMG_MK := device/asus/tf101/recovery/recovery.mk
 TARGET_RELEASETOOLS_EXTENSIONS := $(LOCAL_PATH)
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 8388608
-# Comment the following if using custom optimizations that result in too large recovery.img stopping build, keeping in mind that said recovery.img is NOT usable if > 5MB size.
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 5242880
-# Uncomment the following and comment above if recovery.img size stopping desired build.
-#BOARD_RECOVERYIMAGE_PARTITION_SIZE := 6242880 #To allow user build to complete, NOT a usable recovery.img for tf101
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 8242880
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 536870912
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 14372306944
 BOARD_FLASH_BLOCK_SIZE := 4096
@@ -125,7 +125,7 @@ BOARD_HAL_STATIC_LIBRARIES := \
 
 # Custom Tools
 TARGET_RECOVERY_PRE_COMMAND := "echo 'boot-recovery' > /dev/block/mmcblk0p3; sync"
-TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/asus/tf101/releasetools/tf101_ota_from_target_files
+TARGET_RELEASETOOL_OTA_FROM_TARGET_ADDITIONAL_ARGS := --override_boot_partition=/staging
 
 # Avoid the generation of ldrcc instructions
 NEED_WORKAROUND_CORTEX_A9_745320 := true

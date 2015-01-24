@@ -13,14 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Uncomment the following to change to 'arm-eabi-4.4.3' to build the recovery kernel instead of using prebuilt recovery kernel. This WILL also use the same toolchain to use for normal ROM kernel build, so remember to comment it back out or point it at the appropriate tool chain to use for normal kernel.
+# Uncomment the following to change to 'arm-eabi-4.4.3' toolchain for recovery compiling
 #TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.4.3
 
 $(call inherit-product-if-exists, vendor/asus/tf101/tf101-vendor.mk)
 
 DEVICE_PACKAGE_OVERLAYS += device/asus/tf101/overlay
 
-# Ramdisk files
+# Ramdisk
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/ramdisk/fstab.ventana:root/fstab.ventana \
 	$(LOCAL_PATH)/ramdisk/init.ventana.rc:root/init.ventana.rc \
@@ -28,7 +28,7 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/ramdisk/ueventd.ventana.rc:root/ueventd.ventana.rc \
 	$(LOCAL_PATH)/twrp.fstab:recovery/root/etc/twrp.fstab
 
-# Bluetooth configuration files
+# Bluetooth Configuration
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/etc/firmware/bcm4329.hcd:system/etc/firmware/bcm4329.hcd \
     $(LOCAL_PATH)/prebuilt/etc/firmware/BCM4329B1_002.002.023.0797.0863.hcd:system/etc/firmware/BCM4329B1_002.002.023.0797.0863.hcd \
@@ -48,7 +48,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/wifi/nvram_nh615.txt:system/etc/nvram_nh615.txt \
     $(LOCAL_PATH)/prebuilt/wifi/nvram.txt:system/etc/nvram.txt
 
-# Input stuff
+# Input Configurations
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/usr/idc/atmel-maxtouch.idc:system/usr/idc/atmel-maxtouch.idc \
     $(LOCAL_PATH)/prebuilt/usr/idc/elantech_touchscreen.idc:system/usr/idc/elantech_touchscreen.idc \
@@ -70,12 +70,22 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/prebuilt/etc/firmware/EC/TF101-DOCK-0213.rom:system/etc/firmware/EC/TF101-DOCK-0213.rom \
 	$(LOCAL_PATH)/prebuilt/etc/firmware/EC/TF101G-DOCK-0213.rom:system/etc/firmware/EC/TF101G-DOCK-0213.rom
 
+# Wifi Packages
+ PRODUCT_PACKAGES += \
+    libwpa_client \
+    hostapd \
+    dhcpcd.conf \
+    wpa_supplicant \
+    wpa_supplicant.conf
+
 PRODUCT_PROPERTY_OVERRIDES += \
     wifi.interface=wlan0 \
     wifi.supplicant_scan_interval=15 \
     media.stagefright.cache-params=6144/-1/30 \
     ro.sf.lcd_density=160 \
     ro.bq.gpu_to_cpu_unsupported=1 \
+    ro.build.selinux=0 \
+    ro.boot.selinux=disabled \
     dalvik.vm.dexopt-data-only=1 \
     debug.hwui.render_dirty_regions=false \
     persist.tegra.nvmmlite=1 \
@@ -154,6 +164,7 @@ PRODUCT_PACKAGES += \
     fsck.exfat \
     mount.exfat \
     mkfs.exfat \
+    e2fsck \
     fstrim \
     libnl \
     iw \
@@ -166,23 +177,26 @@ PRODUCT_PACKAGES += \
     org.omnirom.asusec \
     libasusec_jni
 
-# media config xml file
+# Media Profiles
 PRODUCT_COPY_FILES += \
+    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
     $(LOCAL_PATH)/media/media_profiles.xml:system/etc/media_profiles.xml
 
-# media codec config xml file
+# Media Codecs
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/media/media_codecs.xml:system/etc/media_codecs.xml
 
-# Camera config file
+# Camera Configuration
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/etc/nvcamera.conf:system/etc/nvcamera.conf
 
-# audio mixer paths
+# Audio Mixer
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/mixer_paths.xml:system/etc/mixer_paths.xml
 
-# audio policy configuration
+# Audio Policy
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf
 
@@ -191,7 +205,7 @@ $(call inherit-product, frameworks/native/build/tablet-dalvik-heap.mk)
 
 WIFI_BAND := 802_11_ABG
 
-# Prebuilt config files
+# Prebuilt Configurations
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
     $(LOCAL_PATH)/configs/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
@@ -201,7 +215,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/usr/share/zoneinfo/zoneinfo.idx:system/usr/share/zoneinfo/zoneinfo.idx  \
     $(LOCAL_PATH)/prebuilt/usr/share/zoneinfo/zoneinfo.version:system/usr/share/zoneinfo/zoneinfo.version
 
-# OMX player test
+# OMX Player
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/lib/omxplayer.so:system/lib/omxplayer.so \
     $(LOCAL_PATH)/prebuilt/lib/libdrm1.so:system/lib/libdrm1.so \
